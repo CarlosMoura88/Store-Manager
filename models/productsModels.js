@@ -15,11 +15,11 @@ const productsModels = {
     return item;
   },
 
- /*  insertProduct: async ({ name }) => {
+  insertProduct: async (data) => {
     const sql = 'INSERT INTO products (name) VALUES (?)';
-    const [{ insertId }] = await connection.execute(sql, [name]);    
+    const [{ insertId }] = await connection.execute(sql, [data.name]);
     return insertId;
-  }, */
+  },
 };
 
 module.exports = productsModels;

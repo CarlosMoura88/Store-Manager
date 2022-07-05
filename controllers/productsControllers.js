@@ -1,3 +1,4 @@
+const productsModels = require('../models/productsModels');
 const productsServices = require('../services/productsServices');
 
 const productsControllers = {
@@ -14,6 +15,12 @@ const productsControllers = {
     if (!product) return res.status(404).json({ message: 'Product not found' });   
 
     return res.status(200).json(product);
+  },
+
+  insertProduct: async (req, res) => {     
+    const id = await productsServices.insertProduct(req.body);
+    const product = await productsModels.getProductById(id);
+    return res.status(201).json(product);
   },
 };
 
