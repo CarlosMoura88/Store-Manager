@@ -9,47 +9,41 @@ use(chaiAsPromised);
 
 describe('Testa as funções da pasta models', () => {
   
+  beforeEach(sinon.restore);
+
   describe('@getAllProducts', () => {
 
-    describe('Quando não existem produtos cadastrados', () => {
-
-      beforeEach(() => {
-        const result = [[]];
-        sinon.stub(connection, 'execute').resolves(result)
-      });
-
-      afterEach(sinon.restore);
-  
-      it('Retorn um array', async () => {
-        const products = await productsModels.getAllProducts();
-        expect(products).to.be.an('array')
-      });
-
-      it('Verifica se o primeiro elemento é um array vazio', async () => {
-        const [products] = await productsModels.getAllProducts();
-        expect(products).to.be.an('array')
-        expect(products).to.be.empty;
-      });
+    it('Quando o banco não conectar', () => {
+      sinon.stub(connection, 'execute').rejects();
+      expect(productsModels.getAllProducts()).to.eventually.be.rejected;
     });
 
-    describe('Quando existem produtos cadastrados', () => {
-      beforeEach(() => {
-        const result = [{ "id": 1, "name": "Martelo de Thor" }];
-        sinon.stub(connection, 'execute').resolves(result)
-      });
+    it('Retorna uma lista vazia', () => {
+      sinon.stub(connection, 'execute').resolves([[]]);
+      expect(productsModels.getAllProducts()).to.eventually.be.undefined;
+    });
 
-      afterEach(sinon.restore);
+    it('Retorna todos os produtos', () => {
+      sinon.stub(connection, 'execute').resolves([[{}]]);
+      expect(productsModels.getAllProducts()).to.eventually.deep.equal({});
+    });
+  });
 
-      it('Retorn um array', async () => {
-        const products = await productsModels.getAllProducts();
-        expect(products).to.be.an('array')
-      });
+  describe('@getProductById', () => {
+    it('Quando o banco não é acessado', () => {
+      sinon.stub(productsModels, 'getProductById').rejects();
+      expect(productsModels.getProductById(0)).to.be.eventually.rejected;
+    });
 
-      it('Verifica se o primeiro elemento é um objeto', async () => {
-        const [products] = await productsModels.getAllProducts();
-        expect(products).to.be.an('object')
-        expect(products).to.not.be.empty;
-      });
-    })
-  })
+    it('Quando não retorna nenhum produto', () => {
+      sinon.stub(productsModels, 'getProductById').resolves([[]]);
+      expect(productsModels.getProductById(0)).to.be.eventually.undefined;
+    });
+
+    it('Quando retorna o produto', () => {
+      sinon.stub(productsModels, 'getProductById').resolves([[{}]]);
+      expect(productsModels.getProductById(1)).to.be.eventually.deep.equal([{}]);
+    });
+
+   })
 });

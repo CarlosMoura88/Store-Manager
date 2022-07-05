@@ -11,7 +11,7 @@ const productsModels = {
   getProductById: async (id) => {
     const sql = `SELECT * FROM StoreManager.products
     WHERE id = ?`;
-    const [item] = await connection.execute(sql, [id]);    
+    const [[item]] = await connection.execute(sql, [id]);
     return item;
   },
 

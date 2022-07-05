@@ -8,48 +8,17 @@ const { afterEach } = require('mocha');
 use(chaiAsPromised);
 
 describe('Testa as funções da pasta services', () => {
-
+  beforeEach(sinon.restore);
   describe('@getAllProducts', () => {
 
-    describe('Quando não existem produtos cadastrados', () => {
-
-      beforeEach(() => {
-        const result = [[]];
-        sinon.stub(productsModels, 'getAllProducts').resolves(result)
-      });
-
-      afterEach(sinon.restore);
-
-      it('Retorn um array', async () => {
-        const products = await productsServices.getAllProducts();
-        expect(products).to.be.an('array')
-      });
-
-      it('Verifica se o primeiro elemento é um array vazio', async () => {
-        const [products] = await productsServices.getAllProducts();
-        expect(products).to.be.an('array')
-        expect(products).to.be.empty;
-      });
+    it('Quando o banco de dados não conecta', () => {
+      sinon.stub(productsServices, 'getAllProducts').rejects()
+      expect(productsServices.getAllProducts()).to.be.eventually.rejected
     });
 
-    describe('Quando existem produtos cadastrados', () => {
-      beforeEach(() => {
-        const result = [{ "id": 1, "name": "Martelo de Thor" }];
-        sinon.stub(productsModels, 'getAllProducts').resolves(result)
-      });
-
-      afterEach(sinon.restore);
-
-      it('Retorn um array', async () => {
-        const products = await productsServices.getAllProducts();
-        expect(products).to.be.an('array')
-      });
-
-      it('Verifica se o primeiro elemento é um objeto', async () => {
-        const [products] = await productsServices.getAllProducts();
-        expect(products).to.be.an('object')
-        expect(products).to.not.be.empty;
-      });
-    })
-  })
+    it('Retorna os produtos', () => {
+      sinon.stub(productsServices, 'getAllProducts').resolves({})
+      expect(productsServices.getAllProducts()).to.eventually.deep.equal({})
+    });
+  });
 });
