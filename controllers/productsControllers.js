@@ -12,13 +12,14 @@ const productsControllers = {
     const { id } = req.params;
     const product = await productsServices.getProductById(id);
 
-    if (!product) return res.status(404).json({ message: 'Product not found' });   
-
+    if (!product) return res.status(404).json({ message: 'Product not found' });      
     return res.status(200).json(product);
   },
 
-  insertProduct: async (req, res) => {     
-    const id = await productsServices.insertProduct(req.body);
+  insertProduct: async (req, res) => {    
+    const id = await productsServices.insertProduct(req.body);  
+    const { message, code } = id;
+    if (message) return res.status(code).json({ message });
     const product = await productsModels.getProductById(id);
     return res.status(201).json(product);
   },
