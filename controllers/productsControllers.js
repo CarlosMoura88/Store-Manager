@@ -1,7 +1,6 @@
 const productValidate = require('../middlewares/productValidate');
 const productsModels = require('../models/productsModels');
 const productsServices = require('../services/productsServices');
-const throwNotFoundError = require('../services/utils');
 
 const productsControllers = {
   getAllProducts: async (_req, res) => {
@@ -12,7 +11,7 @@ const productsControllers = {
   
   getProductById: async (req, res) => {
     const { id } = req.params;
-    const product = await productsServices.getProductById(id);    
+    const product = await productsServices.getProductById(id);
     return res.status(200).json(product);
   },
 
