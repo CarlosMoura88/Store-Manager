@@ -1,4 +1,5 @@
 const salesModel = require('../models/salesModels');
+const throwNotFoundError = require('./utils');
 
 const salesServices = {
   getAllSales: async () => { 
@@ -6,12 +7,13 @@ const salesServices = {
     return sales;
   },
 
-  getSaleById: async (id) => { 
+  getSaleById: async (id) => {
     const sale = await salesModel.getSaleById(id);
+    if (sale.length < 1) return throwNotFoundError('Sale not found');
     return sale;
   },
 
-  insertSale: async () => { 
+  insertSale: async () => {   
     const id = await salesModel.insertSale();
     return id;
   },

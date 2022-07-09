@@ -21,6 +21,20 @@ const productsControllers = {
     const product = await productsModels.getProductById(id);
     return res.status(201).json(product);
   },
+  updateProduct: async (req, res) => { 
+    const { id } = req.params;
+    const { name } = req.body;    
+    await productValidate.body(req.body);
+    await productsServices.getProductById(id);
+    const product = await productsServices.updateProduct(id, name);    
+    res.status(200).json(product);
+  },
+  deleteProduct: async (req, res) => { 
+    const { id } = req.params;
+    await productsServices.getProductById(id);
+    await productsServices.deleteProduct(id);
+    return res.status(204).end();
+  },
 };
 
 module.exports = productsControllers;

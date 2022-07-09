@@ -3,8 +3,11 @@ const connection = require('../db/connection');
 const salesModel = {
 
   getAllSales: async () => { 
-    const sql = `SELECT * FROM StoreManager.sales
-      ORDER BY id`;
+    const sql = `SELECT sp.sale_id AS saleId, sp.product_id as productId, sp.quantity, s.date
+      FROM StoreManager.sales_products AS sp
+      INNER JOIN StoreManager.sales AS s
+      ON s.id = sp.sale_id      
+      ORDER BY sp.sale_id, sp.product_id;`;
     const [item] = await connection.execute(sql);
     return item;
   },
@@ -24,9 +27,13 @@ const salesModel = {
   },
   
   getSaleById: async (id) => { 
-    const sql = `SELECT * FROM StoreManager.sales
-      WHERE id = ?`;
-    const [[item]] = await connection.execute(sql, [id]);
+    const sql = `SELECT s.date, sp.product_id as productId, sp.quantity
+      FROM StoreManager.sales_products AS sp
+      INNER JOIN StoreManager.sales AS s
+      ON s.id = sp.sale_id
+      WHERE sale_id = ?
+      ORDER BY sp.sale_id, sp.product_id;`;
+    const [item] = await connection.execute(sql, [id]);
     return item;
   },
 };

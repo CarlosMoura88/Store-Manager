@@ -5,8 +5,7 @@ const productValidate = {
     const schema = Joi.object({
       name: Joi.string().required().min(5),
     }).required();
-    const result = await schema.validateAsync(data);    
-    console.log(result);
+    const result = await schema.validateAsync(data);        
     return result;
   },
 };
