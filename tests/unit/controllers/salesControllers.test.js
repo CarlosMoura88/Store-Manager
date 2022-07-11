@@ -32,7 +32,7 @@ describe('Testa salesControllers', () => {
   describe('@getAllSales', () => {
     it('retorna um erro', () => {
       sinon.stub(salesServices, 'getAllSales').rejects();
-      expect(salesControllers.getAllSales()).to.be.eventually.rejected;
+      expect(salesControllers.getAllSales({}, {})).to.be.eventually.rejected;
     });
 
     it('retornas todas as vendas', async () => {
@@ -41,7 +41,7 @@ describe('Testa salesControllers', () => {
         json: sinon.stub().returns(),
       };
       sinon.stub(salesServices, 'getAllSales').resolves(allSales);
-      await salesControllers.getAllSales();
+      await salesControllers.getAllSales({}, res);
       expect(res.status.getCall(0).args[0]).to.equal(200);
       expect(res.json.getCall(0).args[0]).to.deep.equal(allSales);
     });
