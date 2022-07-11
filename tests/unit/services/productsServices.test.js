@@ -1,4 +1,4 @@
-const productsServices = require('../../../services/productsServices')
+/* const productsServices = require('../../../services/productsServices')
 const sinon = require('sinon');
 const { use, expect } = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -40,4 +40,4 @@ describe('Testa as funções da pasta services', () => {
   describe('@insertProduct', () => { 
     it()
   })
-});
+}); */

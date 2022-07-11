@@ -1,16 +1,15 @@
-const productsModels = require('../../../models/productsModels');
-const sinon = require('sinon');
 const { use, expect } = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const sinon = require('sinon');
+
+const productsModels = require('../../../models/productsModels');
 const connection = require('../../../db/connection');
 
 use(chaiAsPromised);
 
 describe('Testa as funções da pasta models', () => {
-  
-  beforeEach(sinon.restore);
-
   describe('@getAllProducts', () => {
+    beforeEach(sinon.restore);
 
     it('Quando o banco não conectar', () => {
       sinon.stub(connection, 'execute').rejects();
@@ -29,31 +28,33 @@ describe('Testa as funções da pasta models', () => {
   });
 
   describe('@getProductById', () => {
+    beforeEach(sinon.restore);
     it('Quando o banco não é acessado', () => {
-      sinon.stub(productsModels, 'getProductById').rejects();
+      sinon.stub(connection, 'execute').rejects();
       expect(productsModels.getProductById(0)).to.be.eventually.rejected;
     });
 
     it('Quando não retorna nenhum produto', () => {
-      sinon.stub(productsModels, 'getProductById').resolves([[]]);
+      sinon.stub(connection, 'execute').resolves([[]]);
       expect(productsModels.getProductById(0)).to.be.eventually.undefined;
     });
 
     it('Quando retorna o produto', () => {
-      sinon.stub(productsModels, 'getProductById').resolves([[{}]]);
+      sinon.stub(connection, 'execute').resolves([{}]);
       expect(productsModels.getProductById(1)).to.be.eventually.deep.equal({});
     });
   });
 
   describe('@insertProduct', () => { 
+    beforeEach(sinon.restore);
     it('Quanto o banco não é acessado', () => {
-      sinon.stub(productsModels, 'insertProduct').rejects();
+      sinon.stub(connection, 'execute').rejects();
       expect(productsModels.insertProduct({})).to.be.eventually.rejected;
-    });
+    });    
 
     it('Deve retornar o id inserido', async () => {
-      sinon.stub(productsModels, 'insertProduct').resolves({ id: 1 });
-      expect(productsModels.insertProduct({})).to.be.eventually.equal(1);
+      sinon.stub(connection, 'execute').resolves([{}]);
+      expect(productsModels.insertProduct({name: 'produto'})).to.eventually.deep.equal([{}]);
     })
   })   
 });
