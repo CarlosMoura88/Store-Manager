@@ -1,5 +1,10 @@
 const salesModel = require('../models/salesModels');
-const throwNotFoundError = require('./utils');
+
+const throwNotFoundError = (message) => {
+  const error = new Error(message);
+  error.name = 'NotFoundError';
+  throw error;
+};
 
 const salesServices = {
   getAllSales: async () => { 

@@ -1,5 +1,10 @@
 const productsModels = require('../models/productsModels');
-const throwNotFoundError = require('./utils');
+
+const throwNotFoundError = (message) => {
+  const error = new Error(message);
+  error.name = 'NotFoundError';
+  throw error;
+};
 
 const productsServices = {
   getAllProducts: async () => {
