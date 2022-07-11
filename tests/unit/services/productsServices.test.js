@@ -3,7 +3,6 @@ const sinon = require('sinon');
 const { use, expect } = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const productsModels = require('../../../models/productsModels');
-const throwNotFoundError = require('../../../services/utils');
 
 use(chaiAsPromised);
 
