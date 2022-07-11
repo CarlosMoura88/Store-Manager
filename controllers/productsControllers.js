@@ -1,5 +1,4 @@
 const productValidate = require('../middlewares/productValidate');
-const productsModels = require('../models/productsModels');
 const productsServices = require('../services/productsServices');
 
 const productsControllers = {
