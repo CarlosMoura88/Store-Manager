@@ -16,8 +16,7 @@ const productsControllers = {
 
   insertProduct: async (req, res) => {    
     await productValidate.body(req.body);
-    const id = await productsServices.insertProduct(req.body);
-    const product = await productsModels.getProductById(id);
+    const product = await productsServices.insertProduct(req.body);    
     return res.status(201).json(product);
   },
   updateProduct: async (req, res) => { 
